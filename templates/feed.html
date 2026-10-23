@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusFeed - Student conversations</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">C</span><span>campusfeed</span></div>
+      <nav class="side-nav" aria-label="Primary navigation">
+        <div class="nav-item active">&#8962; &nbsp; Home</div>
+        <div class="nav-item"># &nbsp; Communities</div>
+        <div class="nav-item">&#10022; &nbsp; Explore</div>
+      </nav>
+      <div class="side-foot">Made for learning Git, together.</div>
+    </aside>
+
+    <main class="feed-column">
+      <header class="feed-header">
+        <div>
+          <p class="eyebrow">CAMPUS CONVERSATIONS</p>
+          <h1 class="feed-title">CampusFeed</h1>
+          <p class="subtitle">Small updates. Big campus energy.</p>
+        </div>
+        <span class="status-chip"><span class="status-dot"></span> Live demo</span>
+      </header>
+
+      <!-- SEARCH_FORM_SLOT: the Search feature will add a form here. -->
+
+      <section class="composer" aria-label="Create a new post">
+        <div class="section-heading"><span class="avatar avatar-self">YOU</span><strong>Share what's happening</strong></div>
+        {% with notices = get_flashed_messages() %}
+          {% for notice in notices %}<div class="notice" role="alert">{{ notice }}</div>{% endfor %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('create_post') }}">
+          <label class="sr-only" for="author">Your name</label>
+          <input id="author" name="author" maxlength="40" placeholder="Your name" required>
+          <label class="sr-only" for="content">Your post</label>
+          <textarea id="content" name="content" maxlength="280" rows="3" placeholder="What would you like to share?" required></textarea>
+          <div class="composer-footer"><span>Keep it friendly and under 280 characters.</span><button class="primary-btn" type="submit">Publish post</button></div>
+        </form>
+      </section>
+
+      <div class="feed-list-heading"><h2>Latest posts</h2><span>Campus community</span></div>
+      <section class="posts" aria-label="Campus posts">
+        {% for post in posts %}
+          <article class="post-card">
+            <div class="post-avatar">{{ post['author'][:1] | upper }}</div>
+            <div class="post-body">
+              <div class="post-author">{{ post['author'] }} <span>@campus</span></div>
+              <p>{{ post['content'] }}</p>
+              <div class="post-actions">
+                <span class="post-time">Post #{{ post['id'] }}</span>
+                <!-- LIKE_ACTION_SLOT: the Likes feature will add a button here. -->
+              </div>
+            </div>
+          </article>
+        {% else %}
+          <div class="empty-state">No posts match yet.</div>
+        {% endfor %}
+      </section>
+    </main>
+    <aside class="right-rail">
+      <div class="rail-card"><p class="eyebrow">WORKSHOP PROJECT</p><h2>Build it together.</h2><p>This feed starts simple. The workshop adds Likes and Search through separate Git branches.</p></div>
+      <div class="rail-card"><p class="eyebrow">TODAY'S MISSION</p><ul><li>Commit your changes</li><li>Work in a feature branch</li><li>Review a pull request</li><li>Merge and synchronize</li></ul></div>
+    </aside>
+  </div>
+</body>
+</html>
