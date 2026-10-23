@@ -26,6 +26,12 @@ class AppTests(unittest.TestCase):
         self.client.post("/posts", data={"author": "Sam", "content": "Hello workshop"})
         self.assertIn(b"Hello workshop", self.client.get("/").data)
 
+    def test_like_increments_post_and_redirects_home(self):
+        response = self.client.post("/posts/1/like")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers["Location"], "/")
+        self.assertIn(b"Like \xc2\xb7 1", self.client.get("/").data)
+
 
 if __name__ == "__main__":
     unittest.main()

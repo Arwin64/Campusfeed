@@ -1,7 +1,7 @@
 """CampusFeed: a deliberately small social feed for a Git demo."""
 import os
 from flask import Flask, flash, redirect, render_template, request, url_for
-from database import fetch_posts, initialize_database, insert_post
+from database import fetch_posts, increment_like_count, initialize_database, insert_post
 
 
 def create_app(test_config=None):
@@ -31,7 +31,11 @@ def create_app(test_config=None):
             insert_post(app.config["DATABASE"], author, content)
         return redirect(url_for("index"))
 
-    # FEATURE_ROUTE_SLOT: feature routes can be added below this comment.
+    @app.post("/posts/<int:post_id>/like")
+    def like_post(post_id):
+        increment_like_count(app.config["DATABASE"], post_id)
+        return redirect(url_for("index"))
+
     return app
 
 

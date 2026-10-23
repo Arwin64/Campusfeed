@@ -22,7 +22,7 @@
       <header class="feed-header">
         <div>
           <p class="eyebrow">CAMPUS CONVERSATIONS</p>
-          <h1 class="feed-title">CampusFeed</h1>
+          <h1 class="feed-title">CampusFeed - Show some love</h1>
           <p class="subtitle">Small updates. Big campus energy.</p>
         </div>
         <span class="status-chip"><span class="status-dot"></span> Live demo</span>
@@ -54,7 +54,9 @@
               <p>{{ post['content'] }}</p>
               <div class="post-actions">
                 <span class="post-time">Post #{{ post['id'] }}</span>
-                <!-- LIKE_ACTION_SLOT: the Likes feature will add a button here. -->
+                <form method="post" action="{{ url_for('like_post', post_id=post['id']) }}">
+                  <button type="submit" aria-label="Like post by {{ post['author'] }}">Like · {{ post['like_count'] }}</button>
+                </form>
               </div>
             </div>
           </article>

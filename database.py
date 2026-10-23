@@ -55,3 +55,11 @@ def insert_post(database_path, author, content):
             "INSERT INTO posts (author, content) VALUES (?, ?)",
             (author, content),
         )
+
+
+def increment_like_count(database_path, post_id):
+    with connect(database_path) as db:
+        db.execute(
+            "UPDATE posts SET like_count = like_count + 1 WHERE id = ?",
+            (post_id,),
+        )
